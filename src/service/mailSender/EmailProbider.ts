@@ -1,6 +1,6 @@
 
 export interface EmailProbider {
-    sendEmail(mailData: MailData) : Promise<Response>
+    sendEmail(mailData: MailData) : Promise<EmailResponse>
 }
 
 export class MailData {
@@ -15,4 +15,8 @@ export class MailData {
         this.subject = subject;
         this.content = content;
     }
+}
+
+export interface EmailResponse {
+    readonly status: number 
 }
