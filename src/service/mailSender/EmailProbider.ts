@@ -4,14 +4,14 @@ export interface EmailProbider {
 }
 
 export class MailData {
-    readonly from: String;
-    readonly too: String[];
-    readonly subject: String;
-    readonly content: String;
+    readonly from: string;
+    readonly to: string[];
+    readonly subject: string;
+    readonly content: string;
 
-    constructor(from: String, too: String[], subject: String, content: String) {
+    constructor(from: string, to: string[], subject: string, content: string) {
         this.from = from;
-        this.too = too;
+        this.to = to;
         this.subject = subject;
         this.content = content;
     }
