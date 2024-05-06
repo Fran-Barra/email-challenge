@@ -1,5 +1,5 @@
 
-export interface MailSender {
+export interface EmailProbider {
     sendEmail(mailData: MailData) : Promise<Response>
 }
 
