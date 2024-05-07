@@ -1,4 +1,4 @@
-export interface EmailProbider {
+export interface EmailProvider {
     sendEmail(mailData: MailData): Promise<EmailResponse>;
 }
 
