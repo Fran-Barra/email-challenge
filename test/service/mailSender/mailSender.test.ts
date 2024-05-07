@@ -1,6 +1,6 @@
-import { MailData } from "../../../src/service/mailSender/EmailProbider";
-import { MailSender } from "../../../src/service/mailSender/MailSender";
-import { MockEmailProvider } from "./mockMailSender";
+import {MailData} from '../../../src/service/mailSender/EmailProbider';
+import {MailSender} from '../../../src/service/mailSender/MailSender';
+import {MockEmailProvider} from './mockMailSender';
 
 const mailData = new MailData(
     'testSender@gamil.com',
@@ -9,19 +9,18 @@ const mailData = new MailData(
     'this is the content'
 );
 
-
-test('test change service on fail', async ()=>{
+test('test change service on fail', async () => {
     const mailSender = new MailSender([
-        new MockEmailProvider({status: 500}), 
-        new MockEmailProvider({status: 200})
+        new MockEmailProvider({status: 500}),
+        new MockEmailProvider({status: 200}),
     ]);
-    expect(await mailSender.sendEmail(mailData)).toBe(true)
+    expect(await mailSender.sendEmail(mailData)).toBe(true);
 });
 
-test('test all servicies fail', async ()=>{
+test('test all servicies fail', async () => {
     const mailSender = new MailSender([
-        new MockEmailProvider({status: 500}), 
-        new MockEmailProvider({status: 400})
+        new MockEmailProvider({status: 500}),
+        new MockEmailProvider({status: 400}),
     ]);
-    expect(await mailSender.sendEmail(mailData)).toBe(false)
+    expect(await mailSender.sendEmail(mailData)).toBe(false);
 });

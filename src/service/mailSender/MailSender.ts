@@ -1,4 +1,4 @@
-import { EmailProbider, EmailResponse, MailData } from "./EmailProbider";
+import {EmailProbider, EmailResponse, MailData} from './EmailProbider';
 
 export class MailSender {
     private readonly probiders: EmailProbider[];
@@ -13,22 +13,22 @@ export class MailSender {
      * @param mailData the data of the mail to send
      * @returns true if one of the mails was able to send, false if all the servicies are down
      */
-    async sendEmail(mailData: MailData) : Promise<boolean> {
+    async sendEmail(mailData: MailData): Promise<boolean> {
         const startingProvider = this.actualProvider;
 
         do {
-            let res: EmailResponse = await this.probiders[this.actualProvider].sendEmail(mailData);
-            if (res.status < 400) return true; 
+            const res: EmailResponse =
+                await this.probiders[this.actualProvider].sendEmail(mailData);
+            if (res.status < 400) return true;
             this.changeProvider();
-        }
-        while (startingProvider != this.actualProvider)
-        
+        } while (startingProvider !== this.actualProvider);
+
         return false;
     }
 
     private changeProvider() {
         this.actualProvider++;
-        if (this.actualProvider == this.probiders.length) this.actualProvider = 0;
+        if (this.actualProvider === this.probiders.length)
+            this.actualProvider = 0;
     }
 }
-
