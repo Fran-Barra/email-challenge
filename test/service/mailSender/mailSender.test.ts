@@ -1,4 +1,4 @@
-import {MailData} from '../../../src/service/mailSender/EmailProbider';
+import {MailData} from '../../../src/service/mailSender/EmailProvider';
 import {MailSender} from '../../../src/service/mailSender/MailSender';
 import {MockEmailProvider} from './mockMailSender';
 
@@ -17,7 +17,7 @@ test('test change service on fail', async () => {
     expect(await mailSender.sendEmail(mailData)).toBe(true);
 });
 
-test('test all servicies fail', async () => {
+test('test all services fail', async () => {
     const mailSender = new MailSender([
         new MockEmailProvider({status: 500}),
         new MockEmailProvider({status: 400}),
