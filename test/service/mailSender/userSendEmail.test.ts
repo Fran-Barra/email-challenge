@@ -1,9 +1,7 @@
+import {UserSendEmailAuthorization} from '../../../src/service/authForSendingEmails/UserSendEmailAuthorization';
 import {MailData} from '../../../src/service/mailSender/EmailProvider';
 import {MailSender} from '../../../src/service/mailSender/MailSender';
-import {
-    UserMailSender,
-    UserSendEmailAuthorization,
-} from '../../../src/service/mailSender/UserMailSender';
+import {UserMailSender} from '../../../src/service/mailSender/UserMailSender';
 import {MockEmailProvider} from './mockMailSender';
 
 const mailData = new MailData(
