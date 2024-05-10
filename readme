@@ -12,7 +12,7 @@ fix: for formatting
 clean: to empty build field
 
 if you are interested in going deeper for this commands read the gts documentation:
-[text](https://github.com/google/gts)
+[gts-doc](https://github.com/google/gts)
 
 test: will run jest for test
 

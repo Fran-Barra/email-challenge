@@ -12,7 +12,7 @@ export class SendgridEmailProvider implements EmailProvider {
             to: mailData.to,
             from: mailData.from,
             subject: mailData.subject,
-            html: mailData.content,
+            text: mailData.content,
         });
         return {status: sngResponse[0].statusCode};
     }
