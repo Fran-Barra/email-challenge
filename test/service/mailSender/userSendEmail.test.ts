@@ -17,7 +17,7 @@ test('send email if authorized', async () => {
         new MailSender([new MockEmailProvider({status: 200})])
     );
     const expected = [true, ''];
-    expect(await userMailSender.userSendEmail('a', mailData)).toEqual(expected);
+    expect(await userMailSender.userSendEmail(1, mailData)).toEqual(expected);
 });
 
 test('send email, when no service available, then return false with error message', async () => {
@@ -26,7 +26,7 @@ test('send email, when no service available, then return false with error messag
         new MailSender([new MockEmailProvider({status: 500})])
     );
     const expected = [false, 'no service was available to send mails'];
-    expect(await userMailSender.userSendEmail('a', mailData)).toEqual(expected);
+    expect(await userMailSender.userSendEmail(1, mailData)).toEqual(expected);
 });
 
 test('send email and user is not authorized to send the email then return false', async () => {
@@ -40,7 +40,7 @@ test('send email and user is not authorized to send the email then return false'
         new MailSender([new MockEmailProvider({status: 500})])
     );
     const expected = [false, 'the user is not authorized to send emails'];
-    expect(await userMailSender.userSendEmail('a', mailData)).toEqual(expected);
+    expect(await userMailSender.userSendEmail(1, mailData)).toEqual(expected);
 });
 
 class MockUserMailSender implements UserSendEmailAuthorization {

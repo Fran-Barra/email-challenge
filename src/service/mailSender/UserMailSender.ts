@@ -15,7 +15,7 @@ export class UserMailSender {
     }
 
     public async userSendEmail(
-        userId: string,
+        userId: number,
         emailData: MailData
     ): Promise<[success: boolean, err: string]> {
         const [success, authorized, err] =
