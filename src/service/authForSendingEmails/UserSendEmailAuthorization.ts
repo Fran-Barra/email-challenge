@@ -1,6 +1,6 @@
 export interface UserSendEmailAuthorization {
     isAuthorized(
-        userId: string,
+        userId: number,
         amountOfMailsToSend: number
     ): Promise<[success: boolean, yes: boolean, err: string]>;
 
@@ -11,7 +11,7 @@ export interface UserSendEmailAuthorization {
      * @param amountOfMailsToRollBack the amount of mails that asked for authorization
      */
     rollBack(
-        userId: string,
+        userId: number,
         amountOfMailsToRollBack: number
     ): Promise<[success: boolean, err: string]>;
 }

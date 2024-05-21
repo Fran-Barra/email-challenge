@@ -1,7 +1,6 @@
 import {
     EmailProvider,
     EmailResponse,
-    MailData,
 } from '../../../src/service/mailSender/EmailProvider';
 
 export class MockEmailProvider implements EmailProvider {
