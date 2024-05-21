@@ -39,7 +39,7 @@ export class EmailController implements Controller {
             const emailReq: SendEmailDTO = req.body;
             const id: number = req.body.id;
 
-            await this.userMailSender.userSendEmail(
+            const result = await this.userMailSender.userSendEmail(
                 id,
                 new MailData(
                     this.senderMail,
@@ -48,7 +48,9 @@ export class EmailController implements Controller {
                     emailReq.content
                 )
             );
-            res.status(HttpStatus.OK).send();
+            if (result[0]) res.status(HttpStatus.OK).send();
+            else res.status(HttpStatus.InternalServerError).send(result[1]);
+            //TODO: IS THIS REALLY AN INTERNAL SERVER ERROR, IT CAN BE CAUSED BY THE OTHER SERVICES
         } catch (err) {
             next(err);
         }
