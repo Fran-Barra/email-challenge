@@ -26,6 +26,7 @@
     "test-providers": "ts-node test\\service\\mailSender\\testProvidersManual.ts"
   },
   "dependencies": {
+    "@prisma/client": "^5.13.0",
     "@sendgrid/mail": "^8.1.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
