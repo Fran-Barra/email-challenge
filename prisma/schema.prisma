@@ -12,3 +12,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  mail String @unique
+  psw String
+  mailsSendedInDay Int @default(0)
+  lastDayOfMailsSended DateTime @default(now())
+}
+
+model Administrator {
+  id Int @id @default(autoincrement())
+  mail String @unique
+  psw String
+}
