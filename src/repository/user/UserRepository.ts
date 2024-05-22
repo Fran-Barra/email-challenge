@@ -17,7 +17,7 @@ export interface UserRepository {
         increase: number,
         limit: number,
         today: Date
-    ): Promise<Boolean>;
+    ): Promise<boolean>;
 
     /**
      * decrease the emails sended in the day of the user

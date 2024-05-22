@@ -2,7 +2,7 @@ import {CreateUser, User, UserWithPassword} from '../../dto/userDTO';
 import {UserRepository} from './UserRepository';
 import {PrismaClient} from '@prisma/client';
 
-class PrismaUserRepository implements UserRepository {
+export class PrismaUserRepository implements UserRepository {
     readonly prisma: PrismaClient;
 
     constructor(client: PrismaClient) {
@@ -23,7 +23,7 @@ class PrismaUserRepository implements UserRepository {
         increase: number,
         limit: number,
         today: Date
-    ): Promise<Boolean> {
+    ): Promise<boolean> {
         if (increase > limit) return false;
 
         const increased = await this.prisma.$transaction(async prisma => {
