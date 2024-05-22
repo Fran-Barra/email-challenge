@@ -3,7 +3,7 @@ import {Controller} from './controller';
 import {AdminAMB} from '../service/admin/AdminAMB';
 import {HttpError} from '../errors/HttpError';
 import {HttpStatus} from '../httpStatus';
-import {CreateAdmin} from '../dto/adminDTO';
+import {AdminCredentials} from '../dto/adminDTO';
 
 export class AdminController implements Controller {
     readonly path: string = '/admin';
@@ -28,7 +28,7 @@ export class AdminController implements Controller {
                     'requires psw in body'
                 );
 
-            const adminData: CreateAdmin = req.body;
+            const adminData: AdminCredentials = req.body;
             const admin = await this.adminAMB.createAdmin(adminData);
             res.status(HttpStatus.Created).json(admin);
         } catch (e) {

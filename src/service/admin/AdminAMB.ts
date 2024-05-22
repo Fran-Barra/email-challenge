@@ -1,5 +1,5 @@
 import {time} from 'console';
-import {Admin, CreateAdmin} from '../../dto/adminDTO';
+import {Admin, AdminCredentials} from '../../dto/adminDTO';
 import {AdminRepository} from '../../repository/admin/AdminRepository';
 import {AdminSecurity} from '../../security/AdminSecurity';
 
@@ -9,7 +9,7 @@ export class AdminAMB {
         this.adminRepository = adminRepository;
     }
 
-    async createAdmin(adminData: CreateAdmin): Promise<Admin> {
+    async createAdmin(adminData: AdminCredentials): Promise<Admin> {
         const encryptedAdmin = await AdminSecurity.encryptPassword(adminData);
         return this.adminRepository.addAdmin(encryptedAdmin);
     }

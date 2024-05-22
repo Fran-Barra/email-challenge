@@ -1,4 +1,4 @@
-export interface CreateAdmin {
+export interface AdminCredentials {
     mail: string;
     psw: string;
 }
