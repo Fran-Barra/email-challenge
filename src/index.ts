@@ -10,12 +10,17 @@ import {MailgunEmailProvider} from './service/mailSender/providers/mailgunProvid
 import {UserSendEmailAuthorizationWithLimit} from './service/authForSendingEmails/UserSendEmailWithLimit';
 import {PrismaUserRepository} from './repository/user/PrismaUserRepository';
 import {PrismaClient} from '@prisma/client';
+import {AdminController} from './controller/AdminController';
+import {AdminAMB} from './service/admin/AdminAMB';
+import {PrismaAdminRepository} from './repository/admin/PrismaAdminRepository';
 
 //TODO: change considering NODE_ENV
 dotenv.config({path: '.env'});
 const prismaClient: PrismaClient = new PrismaClient();
+
 //TODO: change morgan to run as dev or as prod
 const app = new App(Number(process.env.API_PORT), morgan('dev'), [
+    new AdminController(new AdminAMB(new PrismaAdminRepository(prismaClient))),
     new EmailController(
         new UserMailSender(
             new UserSendEmailAuthorizationWithLimit(
