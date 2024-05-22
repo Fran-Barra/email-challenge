@@ -1,4 +1,4 @@
-import {CreateUser, User, UserWithPassword} from '../../dto/userDTO';
+import {CreateUser, User, UserStats, UserWithPassword} from '../../dto/userDTO';
 import {UserRepository} from './UserRepository';
 import {PrismaClient} from '@prisma/client';
 
@@ -8,6 +8,7 @@ export class PrismaUserRepository implements UserRepository {
     constructor(client: PrismaClient) {
         this.prisma = client;
     }
+
     async addUser(user: CreateUser): Promise<User> {
         const response = await this.prisma.user.create({
             data: {
@@ -58,6 +59,16 @@ export class PrismaUserRepository implements UserRepository {
         await this.prisma.user.update({
             where: {id: id},
             data: {mailsSendedInDay: {decrement: decrease}},
+        });
+    }
+
+    async getUsersStatsOfTheDay(): Promise<UserStats[]> {
+        return await this.prisma.user.findMany({
+            where: {
+                lastDayOfMailsSended: new Date(),
+                mailsSendedInDay: {gt: 0},
+            },
+            select: {id: true, mail: true, mailsSendedInDay: true},
         });
     }
 
