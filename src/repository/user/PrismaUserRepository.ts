@@ -1,4 +1,9 @@
-import {CreateUser, User, UserStats, UserWithPassword} from '../../dto/userDTO';
+import {
+    User,
+    UserCredentials,
+    UserStats,
+    UserWithPassword,
+} from '../../dto/userDTO';
 import {UserRepository} from './UserRepository';
 import {PrismaClient} from '@prisma/client';
 
@@ -9,14 +14,19 @@ export class PrismaUserRepository implements UserRepository {
         this.prisma = client;
     }
 
-    async addUser(user: CreateUser): Promise<User> {
-        const response = await this.prisma.user.create({
+    async addUser(user: UserCredentials): Promise<User> {
+        return await this.prisma.user.create({
             data: {
                 mail: user.mail,
                 psw: user.psw,
             },
+            select: {
+                id: true,
+                mail: true,
+                mailsSendedInDay: true,
+                lastDayOfMailsSended: true,
+            },
         });
-        return this.createUserFromPrimaUser(response);
     }
 
     async increaseMailingInformationOrNot(
@@ -72,13 +82,14 @@ export class PrismaUserRepository implements UserRepository {
         });
     }
 
-    //TODO: remove this and use select in query
-    private createUserFromPrimaUser(user: UserWithPassword): User {
-        return {
-            id: user.id,
-            mail: user.mail,
-            mailsSendLastTime: user.mailsSendedInDay,
-            lastDayOfMailsSended: user.lastDayOfMailsSended,
-        };
+    async findUser(userMail: string): Promise<UserWithPassword | null> {
+        return this.prisma.user.findUnique({
+            where: {mail: userMail},
+            select: {
+                id: true,
+                mail: true,
+                psw: true,
+            },
+        });
     }
 }

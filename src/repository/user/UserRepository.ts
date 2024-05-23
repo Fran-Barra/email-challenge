@@ -1,7 +1,12 @@
-import {CreateUser, User, UserStats} from '../../dto/userDTO';
+import {
+    User,
+    UserCredentials,
+    UserWithPassword,
+    UserStats,
+} from '../../dto/userDTO';
 
 export interface UserRepository {
-    addUser(user: CreateUser): Promise<User>;
+    addUser(user: UserCredentials): Promise<User>;
 
     /**
      * Tries to find the user with the id, throw an error if failed.
@@ -25,6 +30,7 @@ export interface UserRepository {
      * @param decrease the amount to decrease the counter
      */
     decreaseMailsSended(id: number, decrease: number): Promise<any>;
+    findUser(userMail: string): Promise<UserWithPassword | null>;
 
     /**
      * Get all users that had sended email the actual day and their information

@@ -16,6 +16,8 @@ import {PrismaAdminRepository} from './repository/admin/PrismaAdminRepository';
 import {AdminRepository} from './repository/admin/AdminRepository';
 import {StatsController} from './controller/StatsController';
 import {UserRepository} from './repository/user/UserRepository';
+import {UserController} from './controller/UserController';
+import {UserAMB} from './service/user/UserAMB';
 
 //TODO: change considering NODE_ENV
 dotenv.config({path: '.env'});
@@ -27,6 +29,7 @@ const userRepository: UserRepository = new PrismaUserRepository(prismaClient);
 const app = new App(Number(process.env.API_PORT), morgan('dev'), [
     //TODO: strange this, should the controller know the repo?
     new AdminController(new AdminAMB(adminRepo), adminRepo),
+    new UserController(new UserAMB(userRepository), userRepository),
     new StatsController(userRepository),
     new EmailController(
         new UserMailSender(
