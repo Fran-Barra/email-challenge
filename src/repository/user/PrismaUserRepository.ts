@@ -1,4 +1,4 @@
-import {CreateUser, User, UserWithPassword} from '../../dto/userDTO';
+import {User, UserCredentials, UserWithPassword} from '../../dto/userDTO';
 import {UserRepository} from './UserRepository';
 import {PrismaClient} from '@prisma/client';
 
@@ -8,7 +8,7 @@ export class PrismaUserRepository implements UserRepository {
     constructor(client: PrismaClient) {
         this.prisma = client;
     }
-    async addUser(user: CreateUser): Promise<User> {
+    async addUser(user: UserCredentials): Promise<User> {
         const response = await this.prisma.user.create({
             data: {
                 mail: user.mail,

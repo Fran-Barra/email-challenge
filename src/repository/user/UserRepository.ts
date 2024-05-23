@@ -1,7 +1,7 @@
-import {CreateUser, User} from '../../dto/userDTO';
+import {User, UserCredentials} from '../../dto/userDTO';
 
 export interface UserRepository {
-    addUser(user: CreateUser): Promise<User>;
+    addUser(user: UserCredentials): Promise<User>;
 
     /**
      * Tries to find the user with the id, throw an error if failed.

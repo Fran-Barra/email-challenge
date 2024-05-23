@@ -1,6 +1,6 @@
 import mail = require('@sendgrid/mail');
 
-export interface CreateUser {
+export interface UserCredentials {
     mail: string;
     psw: string;
 }
