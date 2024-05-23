@@ -1,4 +1,9 @@
-import {User, UserCredentials, UserStats, UserWithPassword} from '../../dto/userDTO';
+import {
+    User,
+    UserCredentials,
+    UserStats,
+    UserWithPassword,
+} from '../../dto/userDTO';
 import {UserRepository} from './UserRepository';
 import {PrismaClient} from '@prisma/client';
 

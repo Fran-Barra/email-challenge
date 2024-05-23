@@ -1,4 +1,9 @@
-import {User, UserCredentials, UserWithPassword, UserStats} from '../../dto/userDTO';
+import {
+    User,
+    UserCredentials,
+    UserWithPassword,
+    UserStats,
+} from '../../dto/userDTO';
 
 export interface UserRepository {
     addUser(user: UserCredentials): Promise<User>;
