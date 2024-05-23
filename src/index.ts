@@ -13,14 +13,17 @@ import {PrismaClient} from '@prisma/client';
 import {AdminController} from './controller/AdminController';
 import {AdminAMB} from './service/admin/AdminAMB';
 import {PrismaAdminRepository} from './repository/admin/PrismaAdminRepository';
+import {AdminRepository} from './repository/admin/AdminRepository';
 
 //TODO: change considering NODE_ENV
 dotenv.config({path: '.env'});
 const prismaClient: PrismaClient = new PrismaClient();
+const adminRepo: AdminRepository = new PrismaAdminRepository(prismaClient);
 
 //TODO: change morgan to run as dev or as prod
 const app = new App(Number(process.env.API_PORT), morgan('dev'), [
-    new AdminController(new AdminAMB(new PrismaAdminRepository(prismaClient))),
+    //TODO: strange this, should the controller know the repo?
+    new AdminController(new AdminAMB(adminRepo), adminRepo),
     new EmailController(
         new UserMailSender(
             new UserSendEmailAuthorizationWithLimit(
