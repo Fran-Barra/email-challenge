@@ -40,12 +40,12 @@ export class AdminSecurity {
                 'mail or password is wrong'
             );
 
-        if (this.tokenPassword === undefined)
+        if (AdminSecurity.tokenPassword === undefined)
             throw new Error('token password for admins not set on environment');
 
         const token = sign(
             {id: admin.id, mail: admin.mail},
-            this.tokenPassword,
+            AdminSecurity.tokenPassword,
             {expiresIn: '1h'}
         );
         console.log(token);
@@ -54,18 +54,30 @@ export class AdminSecurity {
 
     static async authorize(req: Request, res: Response, next: NextFunction) {
         try {
-            const token = req.header('Authorization');
-            if (!token)
+            const tokenWithBearer = req.header('Authorization');
+            if (!tokenWithBearer)
                 throw new HttpError(
                     HttpStatus.Unauthorized,
                     'missing authorization'
                 );
-            if (this.tokenPassword === undefined)
+
+            const split = tokenWithBearer.split(' ');
+            if (split.length !== 2) {
+                throw new HttpError(
+                    HttpStatus.BadRequest,
+                    'authorization requires: bearer <token>'
+                );
+            }
+            const token = split[1];
+
+            if (AdminSecurity.tokenPassword === undefined) {
                 throw new Error(
                     'token password for admins not set on environment'
                 );
+            }
 
-            verify(token, this.tokenPassword);
+            verify(token, AdminSecurity.tokenPassword);
+            next();
         } catch (err) {
             if (err instanceof TokenExpiredError)
                 res.status(HttpStatus.Unauthorized).send({
