@@ -12,6 +12,12 @@ export interface User {
     lastDayOfMailsSended: Date;
 }
 
+export interface UserStats {
+    id: number;
+    mail: string;
+    mailsSendedInDay: number;
+}
+
 export interface UserWithPassword {
     id: number;
     mail: string;

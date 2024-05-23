@@ -1,4 +1,4 @@
-import {User, UserCredentials, UserWithPassword} from '../../dto/userDTO';
+import {User, UserCredentials, UserWithPassword, UserStats} from '../../dto/userDTO';
 
 export interface UserRepository {
     addUser(user: UserCredentials): Promise<User>;
@@ -26,4 +26,9 @@ export interface UserRepository {
      */
     decreaseMailsSended(id: number, decrease: number): Promise<any>;
     findUser(userMail: string): Promise<UserWithPassword | null>;
+
+    /**
+     * Get all users that had sended email the actual day and their information
+     */
+    getUsersStatsOfTheDay(): Promise<UserStats[]>;
 }
