@@ -29,7 +29,7 @@ const userRepository: UserRepository = new PrismaUserRepository(prismaClient);
 const app = new App(Number(process.env.API_PORT), morgan('dev'), [
     //TODO: strange this, should the controller know the repo?
     new AdminController(new AdminAMB(adminRepo), adminRepo),
-    new UserController(new UserAMB(userRepository)),
+    new UserController(new UserAMB(userRepository), userRepository),
     new StatsController(userRepository),
     new EmailController(
         new UserMailSender(

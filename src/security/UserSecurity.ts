@@ -42,7 +42,7 @@ export class UserSecurity {
             );
 
         if (UserSecurity.tokenPassword === undefined)
-            throw new Error('token password for admins not set on environment');
+            throw new Error('token password for users not set on environment');
 
         const token = sign(
             {id: user.id, mail: user.mail},
