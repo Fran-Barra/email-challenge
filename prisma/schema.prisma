@@ -18,7 +18,7 @@ model User {
   mail String @unique
   psw String
   mailsSendedInDay Int @default(0)
-  lastDayOfMailsSended DateTime @default(now())
+  lastDayOfMailsSended DateTime 
 }
 
 model Administrator {

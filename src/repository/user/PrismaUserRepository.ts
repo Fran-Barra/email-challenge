@@ -19,6 +19,9 @@ export class PrismaUserRepository implements UserRepository {
             data: {
                 mail: user.mail,
                 psw: user.psw,
+                lastDayOfMailsSended: new Date(
+                    new Date().toISOString().split('T')[0]
+                ),
             },
             select: {
                 id: true,
@@ -36,6 +39,8 @@ export class PrismaUserRepository implements UserRepository {
         today: Date
     ): Promise<boolean> {
         if (increase > limit) return false;
+        const dayString = today.toISOString().split('T')[0];
+        const day = new Date(dayString);
 
         const increased = await this.prisma.$transaction(async prisma => {
             const userData = await prisma.user.findUnique({
@@ -44,12 +49,12 @@ export class PrismaUserRepository implements UserRepository {
             });
             if (userData === null) throw Error(`not found user with id: ${id}`);
 
-            if (userData.lastDayOfMailsSended !== today) {
+            if (userData.lastDayOfMailsSended.getTime() !== day.getTime()) {
                 await prisma.user.update({
                     where: {id: id},
                     data: {
                         mailsSendedInDay: increase,
-                        lastDayOfMailsSended: today,
+                        lastDayOfMailsSended: day,
                     },
                 });
                 return true;
@@ -75,7 +80,9 @@ export class PrismaUserRepository implements UserRepository {
     async getUsersStatsOfTheDay(): Promise<UserStats[]> {
         return await this.prisma.user.findMany({
             where: {
-                lastDayOfMailsSended: new Date(),
+                lastDayOfMailsSended: new Date(
+                    new Date().toISOString().split('T')[0]
+                ),
                 mailsSendedInDay: {gt: 0},
             },
             select: {id: true, mail: true, mailsSendedInDay: true},
