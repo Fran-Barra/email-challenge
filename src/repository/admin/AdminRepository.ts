@@ -1,5 +1,6 @@
-import {Admin, CreateAdmin} from '../../dto/adminDTO';
+import {Admin, AdminCredentials, AdminWithPsw} from '../../dto/adminDTO';
 
 export interface AdminRepository {
-    addAdmin(admin: CreateAdmin): Promise<Admin>;
+    addAdmin(admin: AdminCredentials): Promise<Admin>;
+    findAdmin(adminMail: string): Promise<AdminWithPsw | null>;
 }

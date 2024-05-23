@@ -1,5 +1,5 @@
 import {PrismaClient} from '@prisma/client';
-import {Admin, CreateAdmin} from '../../dto/adminDTO';
+import {Admin, AdminCredentials, AdminWithPsw} from '../../dto/adminDTO';
 import {AdminRepository} from './AdminRepository';
 
 export class PrismaAdminRepository implements AdminRepository {
@@ -8,10 +8,17 @@ export class PrismaAdminRepository implements AdminRepository {
         this.prisma = client;
     }
 
-    async addAdmin(admin: CreateAdmin): Promise<Admin> {
+    async addAdmin(admin: AdminCredentials): Promise<Admin> {
         return await this.prisma.administrator.create({
             data: admin,
             select: {id: true, mail: true},
+        });
+    }
+
+    async findAdmin(adminMail: string): Promise<AdminWithPsw | null> {
+        return await this.prisma.administrator.findUnique({
+            where: {mail: adminMail},
+            select: {id: true, mail: true, psw: true},
         });
     }
 }
