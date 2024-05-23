@@ -8,14 +8,20 @@ export class PrismaUserRepository implements UserRepository {
     constructor(client: PrismaClient) {
         this.prisma = client;
     }
+
     async addUser(user: UserCredentials): Promise<User> {
-        const response = await this.prisma.user.create({
+        return await this.prisma.user.create({
             data: {
                 mail: user.mail,
                 psw: user.psw,
             },
+            select: {
+                id: true,
+                mail: true,
+                mailsSendedInDay: true,
+                lastDayOfMailsSended: true,
+            },
         });
-        return this.createUserFromPrimaUser(response);
     }
 
     async increaseMailingInformationOrNot(
@@ -61,13 +67,14 @@ export class PrismaUserRepository implements UserRepository {
         });
     }
 
-    //TODO: remove this and use select in query
-    private createUserFromPrimaUser(user: UserWithPassword): User {
-        return {
-            id: user.id,
-            mail: user.mail,
-            mailsSendLastTime: user.mailsSendedInDay,
-            lastDayOfMailsSended: user.lastDayOfMailsSended,
-        };
+    async findUser(userMail: string): Promise<UserWithPassword | null> {
+        return this.prisma.user.findUnique({
+            where: {mail: userMail},
+            select: {
+                id: true,
+                mail: true,
+                psw: true,
+            },
+        });
     }
 }

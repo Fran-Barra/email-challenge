@@ -1,4 +1,4 @@
-import {User, UserCredentials} from '../../dto/userDTO';
+import {User, UserCredentials, UserWithPassword} from '../../dto/userDTO';
 
 export interface UserRepository {
     addUser(user: UserCredentials): Promise<User>;
@@ -25,4 +25,5 @@ export interface UserRepository {
      * @param decrease the amount to decrease the counter
      */
     decreaseMailsSended(id: number, decrease: number): Promise<any>;
+    findUser(userMail: string): Promise<UserWithPassword | null>;
 }
