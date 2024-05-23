@@ -7,3 +7,9 @@ export interface Admin {
     id: number;
     mail: String;
 }
+
+export interface AdminWithPsw {
+    id: number;
+    mail: String;
+    psw: string;
+}
