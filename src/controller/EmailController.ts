@@ -5,6 +5,8 @@ import {SendEmailDTO} from '../dto/sendEmailDTO';
 import {MailData} from '../service/mailSender/EmailProvider';
 import {HttpStatus} from '../httpStatus';
 import {HttpError} from '../errors/HttpError';
+import {UserSecurity} from '../security/UserSecurity';
+import {JwtPayload} from 'jsonwebtoken';
 
 export class EmailController implements Controller {
     readonly path: string = '/email';
@@ -23,7 +25,7 @@ export class EmailController implements Controller {
 
         this.router
             .route(`${this.path}/send-email`)
-            .post(this.userSendEmail.bind(this));
+            .post(UserSecurity.authorize, this.userSendEmail.bind(this));
     }
 
     private async userSendEmail(
@@ -37,10 +39,11 @@ export class EmailController implements Controller {
                 throw new HttpError(400, 'expected to in body');
 
             const emailReq: SendEmailDTO = req.body;
-            const id: number = req.body.id;
+            const sessionInfo: JwtPayload = req.body
+                .user_session_data as JwtPayload;
 
             const result = await this.userMailSender.userSendEmail(
-                id,
+                sessionInfo.id,
                 new MailData(
                     this.senderMail,
                     emailReq.to,

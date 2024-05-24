@@ -1,6 +1,12 @@
 import {compare, hash} from 'bcrypt';
 import {Request, Response, NextFunction} from 'express';
-import {JsonWebTokenError, TokenExpiredError, sign, verify} from 'jsonwebtoken';
+import {
+    JsonWebTokenError,
+    JwtPayload,
+    TokenExpiredError,
+    sign,
+    verify,
+} from 'jsonwebtoken';
 
 import {HttpError} from '../errors/HttpError';
 import {HttpStatus} from '../httpStatus';
@@ -8,9 +14,6 @@ import {UserCredentials, UserWithPassword} from '../dto/userDTO';
 import {UserRepository} from '../repository/user/UserRepository';
 
 export class UserSecurity {
-    private static readonly tokenPassword: string | undefined =
-        process.env.USER_PWS;
-
     static async encryptPassword(
         userInfo: UserCredentials
     ): Promise<UserCredentials> {
@@ -41,14 +44,13 @@ export class UserSecurity {
                 'mail or password is wrong'
             );
 
-        if (UserSecurity.tokenPassword === undefined)
+        const tokenPassword = process.env.USER_PWS;
+        if (tokenPassword === undefined)
             throw new Error('token password for users not set on environment');
 
-        const token = sign(
-            {id: user.id, mail: user.mail},
-            UserSecurity.tokenPassword,
-            {expiresIn: '1h'}
-        );
+        const token = sign({id: user.id, mail: user.mail}, tokenPassword, {
+            expiresIn: '1h',
+        });
         return token;
     }
 
@@ -70,13 +72,17 @@ export class UserSecurity {
             }
             const token = split[1];
 
-            if (UserSecurity.tokenPassword === undefined) {
+            const tokenPassword = process.env.USER_PWS;
+            if (tokenPassword === undefined) {
                 throw new Error(
                     'token password for users not set on environment'
                 );
             }
 
-            verify(token, UserSecurity.tokenPassword);
+            req.body.user_session_data = verify(
+                token,
+                tokenPassword
+            ) as JwtPayload;
             next();
         } catch (err) {
             if (err instanceof TokenExpiredError)
